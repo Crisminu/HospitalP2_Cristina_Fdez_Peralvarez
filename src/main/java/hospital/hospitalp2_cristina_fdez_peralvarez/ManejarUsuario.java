@@ -98,12 +98,22 @@ public class ManejarUsuario {
         return n;
     }
     void modificarUsuario(Usuario usuario) throws SQLException {
-        Connection conn = DriverManager.getConnection("jdbc:sqlite:src/main/java/hospital/hospitalp2_cristina_fdez_peralvarez/hospital.db");
-        Statement stmt = conn.createStatement();
+        conn = DriverManager.getConnection("jdbc:sqlite:src/main/java/hospital/hospitalp2_cristina_fdez_peralvarez/hospital.db");
+        stmt = conn.createStatement();
         String nombre = usuario.getNombre();
         String cargo = usuario.getCargo();
-        String sql = "UPDATE USUARIO SET NOMBRE = '" + nombre + "',TIPO = '" + cargo + "';";
+        String sql = "UPDATE USUARIO SET NOMBRE = '" + nombre + "',TIPO = '" + cargo + "' WHERE NUMPERS="+ usuario.getNumeroPersonal() + ";";
         stmt.executeQuery(sql);
     }
+    public void recargarListaUsuarios() throws SQLException {
+        usuarios = rellenarListUsuarios();
+    }
+   /* void darDeBaja(Usuario usuario) throws SQLException {
+        conn = DriverManager.getConnection("jdbc:sqlite:src/main/java/hospital/hospitalp2_cristina_fdez_peralvarez/hospital.db");
+        stmt = conn.createStatement();
+        String fechaBaja = usuario.getFechaBaja();
+        String sql = "UPDATE USUARIO SET FECHABAJA = '" + fechaBaja + "' WHERE NUMPERS="+ usuario.getNumeroPersonal() + ";";
+        stmt.executeQuery(sql);
+    }*/
 
 }

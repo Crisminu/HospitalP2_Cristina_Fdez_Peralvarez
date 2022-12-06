@@ -13,16 +13,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="505.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hospital.hospitalp2_cristina_fdez_peralvarez.ControladorHospital">
+<VBox prefHeight="505.0" prefWidth="640.0" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hospital.hospitalp2_cristina_fdez_peralvarez.ControladorHospital">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
         <Menu mnemonicParsing="false" text="Archivo">
           <items>
             <MenuItem mnemonicParsing="false" onAction="#cambiaraEscena2" text="Mantenimiento" />
+                  <MenuItem mnemonicParsing="false" onAction="#salir" text="Salir" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Salir" />
       </menus>
     </MenuBar>
   <Label alignment="CENTER" style="&#10;" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
@@ -39,7 +39,7 @@
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="416.0" prefWidth="420.0">
                            <children>
                               <TextField fx:id="nombreAlta" layoutX="61.0" layoutY="67.0" promptText="Nombre" />
-                              <Label layoutX="61.0" layoutY="37.0" text="Nombre" />
+                              <Label layoutX="61.0" layoutY="37.0" text="Nombre" textFill="#0d5d5e" />
                               <Label layoutX="61.0" layoutY="115.0" text="Número de identificación" />
                               <TextField fx:id="identAlta" layoutX="61.0" layoutY="151.0" promptText="Número de identificación" />
                               <Label layoutX="61.0" layoutY="200.0" text="Cargo" />

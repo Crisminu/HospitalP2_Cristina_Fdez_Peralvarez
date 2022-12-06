@@ -6,7 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -18,6 +17,9 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class ControladorMant implements Initializable {
@@ -25,7 +27,7 @@ public class ControladorMant implements Initializable {
     private ManejarUsuario manejarUsuario;
     private Scene escenaPrincipal;
     @FXML
-    private TableView <Usuario> tabla;
+    private TableView<Usuario> tabla;
     @FXML
     private TableColumn columId;
     @FXML
@@ -45,8 +47,6 @@ public class ControladorMant implements Initializable {
     TextField bajaFecha = null;
 
 
-
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -62,12 +62,14 @@ public class ControladorMant implements Initializable {
         tabla.setItems(obUsuarios);
 
     }
-   void loadData() {
+
+    void loadData() {
         obUsuarios = FXCollections.observableArrayList(manejarUsuario.getUsuarios());
         tabla.setItems(obUsuarios);
-            tabla.refresh();
+        tabla.refresh();
 
     }
+
     public void cambiaraEscena1(ActionEvent event) throws IOException {
         stage = (Stage) tabla.getScene().getWindow();
         stage.setTitle("Hospital Celia Viñas");
@@ -83,28 +85,29 @@ public class ControladorMant implements Initializable {
     void displayContext(MouseEvent event) {
 
     }
+
     @FXML
     void modificarSel(ActionEvent event) {
         Usuario seleccionado = tabla.getSelectionModel().getSelectedItem();
-        if(seleccionado == null){
+        if (seleccionado == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("No ha seleccionado ningún usuario");
             alert.show();
         }
-        Stage popupwindow=new Stage();
+        Stage popupwindow = new Stage();
 
         popupwindow.initModality(Modality.APPLICATION_MODAL);
         popupwindow.setTitle("Modificar datos");
 
 
-        Label label1= new Label("Nombre");
-        Label label2= new Label("Cargo");
+        Label label1 = new Label("Nombre");
+        Label label2 = new Label("Cargo");
         textNombre = new TextField(null);
         textCargo = new TextField(null);
 
 
-        Button button1= new Button("Guardar");
+        Button button1 = new Button("Guardar");
 
         button1.setOnAction(e ->
         {
@@ -116,44 +119,45 @@ public class ControladorMant implements Initializable {
             popupwindow.close();
         });
 
-        VBox layout= new VBox(10);
+        VBox layout = new VBox(10);
 
 
-        layout.getChildren().addAll(label1,textNombre,label2,textCargo, button1);
+        layout.getChildren().addAll(label1, textNombre, label2, textCargo, button1);
 
         layout.setAlignment(Pos.CENTER);
 
-        Scene scene1= new Scene(layout, 300, 250);
+        Scene scene1 = new Scene(layout, 300, 250);
 
         popupwindow.setScene(scene1);
 
         popupwindow.showAndWait();
 
     }
-    @FXML
+
+    /*@FXML
     void bajaSele(ActionEvent event) {
         Usuario seleccionado = tabla.getSelectionModel().getSelectedItem();
-        Stage popupwindow=new Stage();
+        Stage popupwindow = new Stage();
 
         popupwindow.initModality(Modality.WINDOW_MODAL);
         popupwindow.setTitle("Modificar datos");
 
 
-        Label label1= new Label("¿Quieres dar de baja al usuario?");
-        Label label2= new Label("Fecha Baja");
+        Label label1 = new Label("¿Quieres dar de baja al usuario?");
+        Label label2 = new Label("Fecha Baja");
 
         bajaFecha = new TextField(null);
-        String baja = bajaFecha.getText();
 
-
-        Button button1= new Button("SI");
+        Button button1 = new Button("SI");
         Button button2 = new Button("NO");
-
 
         button1.setOnAction(e ->
         {
-            this.columBaja.setCellValueFactory(new PropertyValueFactory(baja));
-            obUsuarios.add(seleccionado);
+            try {
+                darDeBaja(seleccionado);
+            } catch (SQLException | ParseException ex) {
+                throw new RuntimeException(ex);
+            }
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("BAJA DE USUARIO");
             alert.setHeaderText("El usuario seleccionado ha sido dado de baja correctamente");
@@ -163,38 +167,51 @@ public class ControladorMant implements Initializable {
         });
 
 
+        VBox layout = new VBox(10);
 
 
-        VBox layout= new VBox(10);
-
-
-        layout.getChildren().addAll(label1,label2,bajaFecha, button1, button2);
+        layout.getChildren().addAll(label1, label2, bajaFecha, button1, button2);
 
         layout.setAlignment(Pos.CENTER);
 
-        Scene scene1= new Scene(layout, 300, 250);
+        Scene scene1 = new Scene(layout, 300, 250);
 
         popupwindow.setScene(scene1);
 
         popupwindow.showAndWait();
-    }
+    }*/
 
     private void modificarUsuario(Usuario seleccionado) throws SQLException {
         Connection conn = DriverManager.getConnection("jdbc:sqlite:src/main/java/hospital/hospitalp2_cristina_fdez_peralvarez/hospital.db");
         Statement stmt = conn.createStatement();
         String nombre = textNombre.getText();
         String cargo = textCargo.getText();
-        String sql = "UPDATE USUARIO SET NOMBRE = '" + nombre + "',TIPO = '" + cargo + "';";
-        stmt.executeQuery(sql);
+        String sql = "UPDATE USUARIO SET NOMBRE = '" + nombre + "',TIPO = '" + cargo + "' WHERE NUMPERS="+ seleccionado.getNumeroPersonal() + ";";
+        stmt.executeUpdate(sql);
+        manejarUsuario.recargarListaUsuarios();
 
-            manejarUsuario.modificarUsuario(seleccionado);
+        obUsuarios = FXCollections.observableArrayList(manejarUsuario.getUsuarios());
+        tabla.setItems(obUsuarios);
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Información");
-            alert.setHeaderText("Usuario modificado");
-            alert.setContentText("Usuario modificado correctamente");
-            alert.show();
-            tabla.refresh();
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Información");
+        alert.setHeaderText("Usuario modificado");
+        alert.setContentText("Usuario modificado correctamente");
+        alert.show();
+        tabla.refresh();
     }
+   /* private void darDeBaja(Usuario seleccionado) throws SQLException, ParseException {
+        Connection conn = DriverManager.getConnection("jdbc:sqlite:src/main/java/hospital/hospitalp2_cristina_fdez_peralvarez/hospital.db");
+        Statement stmt = conn.createStatement();
+        String fechaBaja = bajaFecha.getText();
+        Date fechaBajaDate = new SimpleDateFormat("yyyy/mm/dd").parse(fechaBaja);
+        String sql = "UPDATE USUARIO SET FECHABAJA = '" + fechaBajaDate + "' WHERE NUMPERS="+ seleccionado.getNumeroPersonal() + ";";
+        stmt.executeUpdate(sql);
+        manejarUsuario.recargarListaUsuarios();
+
+        obUsuarios = FXCollections.observableArrayList(manejarUsuario.getUsuarios());
+        tabla.setItems(obUsuarios);
+    }*/
 
 }

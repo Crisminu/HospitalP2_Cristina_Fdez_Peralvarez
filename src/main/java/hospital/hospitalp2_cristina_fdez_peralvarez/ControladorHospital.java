@@ -1,6 +1,7 @@
 package hospital.hospitalp2_cristina_fdez_peralvarez;
 
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -156,5 +157,10 @@ public class ControladorHospital implements Initializable {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/YYYY");
         fecha = dtf.format(date);
         return fecha;
+    }
+    @FXML
+    void salir(ActionEvent event) {
+        Platform.exit();
+        System.exit(0);
     }
 }

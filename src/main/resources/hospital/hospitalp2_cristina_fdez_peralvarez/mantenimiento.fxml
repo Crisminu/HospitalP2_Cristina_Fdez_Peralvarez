@@ -43,7 +43,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hospital.hospitalp2_cristina_fdez_peralvarez.ControladorMant">
+<VBox prefHeight="400.0" prefWidth="640.0" stylesheets="@DarkTheme.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hospital.hospitalp2_cristina_fdez_peralvarez.ControladorMant">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -52,7 +52,6 @@
             <MenuItem mnemonicParsing="false" onAction="#cambiaraEscena1" text="Pantalla Principal" />
           </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Salir" />
       </menus>
     </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
@@ -74,7 +73,6 @@
                   <ContextMenu>
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#modificarSel" text="Modificar" />
-                        <MenuItem mnemonicParsing="false" onAction="#bajaSele" text="Dar de baja" />
                     </items>
                   </ContextMenu>
                </contextMenu>
