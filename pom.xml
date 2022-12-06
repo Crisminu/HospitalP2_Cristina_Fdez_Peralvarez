@@ -38,6 +38,11 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.gotson</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.32.3.8</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -61,7 +66,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                hospital.hospitalp2_cristina_fdez_peralvarez/hospital.hospitalp2_cristina_fdez_peralvarez.HelloApplication
+                                hospital.hospitalp2_cristina_fdez_peralvarez/hospital.hospitalp2_cristina_fdez_peralvarez.Main
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
