@@ -102,8 +102,14 @@ public class ManejarUsuario {
         Statement stmt = conn.createStatement();
         String nombre = usuario.getNombre();
         String cargo = usuario.getCargo();
-        String sql = "UPDATE USUARIO SET NOMBRE = '" + nombre + "',TIPO = '" + cargo + "';";
-        stmt.executeQuery(sql);
+        //String sql = "UPDATE USUARIO SET NOMBRE = '" + nombre + "',TIPO = '" + cargo + "';";
+        String sql = "UPDATE USUARIO SET NOMBRE = '" + nombre + "',TIPO = '" + cargo + "' WHERE NUMPERS="+ usuario.getNumeroPersonal() + ";";
+        stmt.executeUpdate(sql);
+    }
+    //Este método lo pongo para poder actualizar la lista de usuarios desde el controlador
+    //También podrías llamar a este método despues de modificaUsuario y de crearUsuario
+    public void recargarListaUsuarios() throws SQLException {
+        usuarios = rellenarListUsuarios();
     }
 
 }

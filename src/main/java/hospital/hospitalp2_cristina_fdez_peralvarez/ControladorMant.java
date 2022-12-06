@@ -184,10 +184,20 @@ public class ControladorMant implements Initializable {
         Statement stmt = conn.createStatement();
         String nombre = textNombre.getText();
         String cargo = textCargo.getText();
-        String sql = "UPDATE USUARIO SET NOMBRE = '" + nombre + "',TIPO = '" + cargo + "';";
-        stmt.executeQuery(sql);
+        //String sql = "UPDATE USUARIO SET NOMBRE = '" + nombre + "',TIPO = '" + cargo + "';";
+        //Te faltaba el WHERE en la sentencia, como lo tenías cambia todos los registros
+        String sql = "UPDATE USUARIO SET NOMBRE = '" + nombre + "',TIPO = '" + cargo + "' WHERE NUMPERS="+ seleccionado.getNumeroPersonal() + ";";
+        stmt.executeUpdate(sql);
+        //Recargamos los usuarios que hay en la base de datos:
+        manejarUsuario.recargarListaUsuarios();
+        //Y los volvemos a cargar en el observableList y en la tabla. Esto es un poco por
+        //las bravas, pero funciona
+        obUsuarios = FXCollections.observableArrayList(manejarUsuario.getUsuarios());
+        tabla.setItems(obUsuarios);
 
-            manejarUsuario.modificarUsuario(seleccionado);
+            //Usar el manejarUsuario sería lo ideal, pero antes debes cambiar los atributos
+            //de Usuario seleccionado: seleccionade.setNombre(nombre) y seleccionado.setCargo(cargo)
+            //manejarUsuario.modificarUsuario(seleccionado);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Información");
@@ -195,6 +205,8 @@ public class ControladorMant implements Initializable {
             alert.setContentText("Usuario modificado correctamente");
             alert.show();
             tabla.refresh();
+
+
     }
 
 }
